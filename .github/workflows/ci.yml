@@ -1,0 +1,40 @@
+# CI for the toy target.
+#
+# Triggered on pull_request, deliberately. That is what makes this target able to
+# reproduce the condition the runner's baseline logic exists for: merging a pull
+# request creates a *new* commit that was never any request's head, so no job here
+# ever runs against it, and asking GitHub for that commit's check runs returns an
+# empty list rather than a verdict.
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          # `stable` with GOTOOLCHAIN rather than pinning to go.mod's version:
+          # pinning fails outright when setup-go's index does not yet carry it.
+          go-version: stable
+        env:
+          GOTOOLCHAIN: auto
+      - run: go test ./...
+
+  catalog-validation:
+    # Fails on every commit, by design and forever.
+    #
+    # This is the toy stand-in for the org-level checks on a real repository — a
+    # catalogue validation, a policy scanner — that fail regardless of the change
+    # under review, and fail identically on work humans have merged. A gate asking
+    # "did every check pass" is unsatisfiable here by construction, which is the
+    # whole reason CI is judged against a baseline instead.
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "catalog entry missing for this repository (fails for every commit)"
+          exit 1
