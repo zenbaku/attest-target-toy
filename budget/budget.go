@@ -58,22 +58,27 @@ func Apply(items []Item, perKeyBudget int) []Result {
 	return results
 }
 
-// Summary counts results by status.
+// Summary counts results by status and totals the spend across every key.
 type Summary struct {
-	Keys      int
-	Processed int
-	Capped    int
-	Invalid   int
+	Keys       int
+	Processed  int
+	Capped     int
+	Invalid    int
+	TotalSpent int
 }
 
 // Summarize tallies results across all keys.
+//
+// TotalSpent is the sum of each key's final spend. Every Result carries its
+// key's spend after that attempt — unchanged for a capped or invalid item — so
+// the last result seen for a key holds that key's final spend.
 func Summarize(results []Result) Summary {
 	s := Summary{}
-	keys := map[string]struct{}{}
+	finalSpent := map[string]int{}
 
 	for _, r := range results {
 		if r.Item.Key != "" {
-			keys[r.Item.Key] = struct{}{}
+			finalSpent[r.Item.Key] = r.Spent
 		}
 		switch r.Status {
 		case StatusProcessed:
@@ -85,6 +90,10 @@ func Summarize(results []Result) Summary {
 		}
 	}
 
-	s.Keys = len(keys)
+	for _, spent := range finalSpent {
+		s.TotalSpent += spent
+	}
+
+	s.Keys = len(finalSpent)
 	return s
 }
