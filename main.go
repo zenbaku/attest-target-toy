@@ -44,6 +44,6 @@ func main() {
 	}
 
 	s := budget.Summarize(results)
-	fmt.Printf("[INFO] toy: run_done keys=%d processed=%d capped=%d invalid=%d\n",
-		s.Keys, s.Processed, s.Capped, s.Invalid)
+	fmt.Printf("[INFO] toy: run_done keys=%d processed=%d capped=%d invalid=%d total_spent=%d\n",
+		s.Keys, s.Processed, s.Capped, s.Invalid, s.TotalSpent)
 }
