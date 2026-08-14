@@ -22,7 +22,7 @@ go run . --input testdata/items.json --budget 10
 [INFO] toy: item_done key=alpha cost=8 status=processed spent=8
 [INFO] toy: item_done key=alpha cost=5 status=capped spent=8
 [INFO] toy: item_done key=alpha cost=2 status=processed spent=10
-[INFO] toy: run_done keys=3 processed=4 capped=2 invalid=2
+[INFO] toy: run_done keys=3 processed=4 capped=2 invalid=2 total_spent=29
 ```
 
 ## Why this shape
@@ -36,7 +36,7 @@ It gives the runner every observation kind L0 needs, from one 80-line package:
 | Presence assertion | a `status=capped` line appears for an over-budget item |
 | Absence assertion | no `status=processed` line for `beta`'s second item |
 | Positive control for that absence | `beta`'s first item *is* processed, so the emission path demonstrably fired |
-| Field assertions | `key`, `cost`, `status`, `spent` on every line |
+| Field assertions | `key`, `cost`, `status`, `spent` on every line; `total_spent` on the summary |
 | Exit status | `2` on missing `--input`, `1` on unreadable input, `0` otherwise |
 | Independently-authored oracle | `budget/budget_test.go` |
 | Manufacturable failure | delete the body of `budget.Apply` |
