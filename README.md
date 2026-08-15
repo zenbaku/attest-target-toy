@@ -22,7 +22,7 @@ go run . --input testdata/items.json --budget 10
 [INFO] toy: item_done key=alpha cost=8 status=processed spent=8
 [INFO] toy: item_done key=alpha cost=5 status=capped spent=8
 [INFO] toy: item_done key=alpha cost=2 status=processed spent=10
-[INFO] toy: run_done keys=3 processed=4 capped=2 invalid=2 total_spent=29
+[INFO] toy: run_done keys=3 processed=4 capped=2 invalid=2 total_spent=29 capped_cost=14
 ```
 
 ## Why this shape
