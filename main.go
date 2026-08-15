@@ -15,7 +15,7 @@ import (
 
 func main() {
 	input := flag.String("input", "", "path to a JSON array of {key, cost} items")
-	perKey := flag.Int("budget", 10, "per-key budget")
+	perKeyBudget := flag.Int("budget", 10, "per-key budget")
 	flag.Parse()
 
 	if *input == "" {
@@ -35,9 +35,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("[INFO] toy: run_start items=%d budget=%d\n", len(items), *perKey)
+	fmt.Printf("[INFO] toy: run_start items=%d budget=%d\n", len(items), *perKeyBudget)
 
-	results := budget.Apply(items, *perKey)
+	results := budget.Apply(items, *perKeyBudget)
 	for _, r := range results {
 		fmt.Printf("[INFO] toy: item_done key=%s cost=%d status=%s spent=%d\n",
 			r.Item.Key, r.Item.Cost, r.Status, r.Spent)
