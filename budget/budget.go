@@ -60,12 +60,15 @@ func Apply(items []Item, perKeyBudget int) []Result {
 
 // Summary counts results by status and totals the spend across every key. Only
 // processed items are charged, so TotalSpent is the sum of their costs.
+// CappedCost is the total cost of the items that were capped; it is never
+// charged against any budget.
 type Summary struct {
 	Keys       int
 	Processed  int
 	Capped     int
 	Invalid    int
 	TotalSpent int
+	CappedCost int
 }
 
 // Summarize tallies results across all keys.
@@ -83,6 +86,7 @@ func Summarize(results []Result) Summary {
 			s.TotalSpent += r.Item.Cost
 		case StatusCapped:
 			s.Capped++
+			s.CappedCost += r.Item.Cost
 		case StatusInvalid:
 			s.Invalid++
 		}
