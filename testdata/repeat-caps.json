@@ -1,0 +1,6 @@
+[
+  { "key": "alpha", "cost": 8 },
+  { "key": "alpha", "cost": 5 },
+  { "key": "alpha", "cost": 6 },
+  { "key": "beta", "cost": 3 }
+]
